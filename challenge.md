@@ -95,8 +95,8 @@ Create a robust authentication system that follows LSP where different authentic
 
 #### **4. Interface Segregation Principle (ISP)**
 
-- **Challenge**: Design a set of interfaces for a multi-function printer that can print, scan, and fax.
-- **Task**: Create separate interfaces for each functionality so that clients only depend on the interfaces they need.
+- **Challenge**: Design a media player system that supports playing audio, video, and streaming content.
+- **Task**: Create separate interfaces for each media type so that clients only depend on the interfaces relevant to their needs.
 
 #### **5. Dependency Inversion Principle (DIP)**
 
