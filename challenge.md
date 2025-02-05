@@ -22,8 +22,8 @@
 
 #### **5. Strategy Pattern**
 
-- **Challenge**: Build a payment processing system that supports multiple payment methods (e.g., credit card, PayPal, cryptocurrency).
-- **Task**: Use the Strategy pattern to encapsulate each payment method and allow the system to switch between them at runtime.
+- **Challenge**: Build a text analysis system that can process text documents using different analysis strategies (e.g., sentiment analysis, keyword extraction, readability scoring, plagiarism detection).
+- **Task**: Use the Strategy pattern to implement different analysis algorithms that can be swapped at runtime based on user requirements.
 
 #### **6. Adapter Pattern**
 
