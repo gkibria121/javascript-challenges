@@ -37,10 +37,26 @@
 
 #### **8. Template Method Pattern**
 
-- **Challenge**: Create a workflow for processing orders in an e-commerce application (e.g., validate order, process payment, ship order).
-- **Task**: Use the Template Method pattern to define the skeleton of the workflow while allowing subclasses to override specific steps.
+#### Problem Statement:
 
----
+You are tasked with designing a document generation system for a content management application. The system should support generating different types of documents (e.g., PDF, HTML, and plain text) while following a common workflow. The workflow consists of the following steps:
+
+1. **Prepare Content**: Gather and format the content for the document.
+2. **Add Header**: Add a header specific to the document type.
+3. **Add Footer**: Add a footer specific to the document type.
+4. **Generate Document**: Finalize and generate the document in the desired format.
+
+#### Requirements:
+
+- Use the **Template Method Pattern** to define the skeleton of the document generation workflow.
+- Allow subclasses to override specific steps (e.g., adding headers or footers) based on the document type.
+- Ensure the core workflow (sequence of steps) remains consistent across all document types.
+
+#### Your Task:
+
+1. Design the abstract class that defines the template method for the document generation workflow.
+2. Create concrete subclasses for generating PDF, HTML, and plain text documents.
+3. Ensure that the workflow is flexible enough to allow customization of individual steps (e.g., headers and footers) without changing the overall structure.
 
 ### **Challenges for SOLID Principles**
 
