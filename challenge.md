@@ -113,19 +113,6 @@ Create a robust authentication system that follows LSP where different authentic
    - Use the **Observer Pattern** to notify customers about product availability.
    - Apply the **Single Responsibility Principle** to separate product management, order processing, and payment handling.
 
-2. **Game Development**:
-
-   - Use the **Strategy Pattern** to implement different AI behaviors for game characters.
-   - Use the **Decorator Pattern** to add power-ups or abilities to characters dynamically.
-   - Apply the **Open/Closed Principle** to allow adding new character types without modifying existing code.
-
-3. **Task Scheduler**:
-   - Use the **Command Pattern** to encapsulate tasks as objects.
-   - Use the **Template Method Pattern** to define a common workflow for task execution.
-   - Apply the **Dependency Inversion Principle** to decouple task scheduling from task execution.
-
----
-
 ### **Tips for Success**
 
 - Start with simple implementations and gradually add complexity.
