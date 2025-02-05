@@ -72,8 +72,26 @@ You are tasked with designing a document generation system for a content managem
 
 #### **3. Liskov Substitution Principle (LSP)**
 
-- **Challenge**: Create a class hierarchy for shapes (e.g., `Rectangle`, `Square`, `Circle`) where each subclass can be used interchangeably without breaking the program.
-- **Task**: Ensure that derived classes adhere to the behavior expected by the base class.
+Create a robust authentication system that follows LSP where different authentication methods (Email/Password, OAuth, Single Sign-On) can be used interchangeably in your application.
+
+**Requirements:**
+
+1. Create a base authentication interface/class that defines the contract
+2. Implement different authentication strategies that can be substituted without breaking the application
+3. Each authentication method should handle:
+   - User registration
+   - User login
+   - Password/token validation
+   - Session management
+   - Logout functionality
+
+**Additional Constraints:**
+
+- The application using these authentication methods shouldn't need to know the specific implementation details
+- Each authentication method should maintain its own security requirements
+- The system should be able to handle failed authentication attempts appropriately
+- Consider edge cases like expired tokens, invalid credentials, and account lockouts
+- The system should support switching between authentication methods for the same user
 
 #### **4. Interface Segregation Principle (ISP)**
 
