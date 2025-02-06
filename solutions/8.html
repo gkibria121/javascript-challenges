@@ -1,0 +1,65 @@
+<!-- Build a small reactive state management system
+  Create a system to manage and react to state changes without using external libraries. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>State Management</title>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+  <script>
+    const app = document.getElementById("app");
+    let stateValues = [];
+    let callbackIndex = -1;
+    const reacter = () => {
+      callbackIndex = 0;
+      app.innerHTML = "";
+      const [stateA, setStateA] = useState(0);
+      const [stateB, setStateB] = useState(0);
+      createCounter(stateA, setStateA);
+      createCounter(stateB, setStateB);
+    };
+
+    const useState = (initialValue) => {
+      callbackIndex++;
+      const currentIndex = callbackIndex;
+      if (stateValues[currentIndex] === undefined) {
+        stateValues[currentIndex] = initialValue;
+      }
+      const dispatcher = (value) => {
+        stateValues[currentIndex] = value;
+        reacter();
+      };
+      return [stateValues[currentIndex], dispatcher];
+    };
+    const createCounter = (state, setState) => {
+      const conateinr = document.createElement("div");
+      let increase = document.createElement("button");
+      let input = document.createElement("input");
+      let decrease = document.createElement("button");
+
+      input.value = state;
+      input.readOnly = true;
+
+      increase.innerText = "+";
+      decrease.innerText = "-";
+
+      increase.addEventListener("click", () => {
+        setState(state + 1);
+      });
+      decrease.addEventListener("click", () => {
+        setState(state - 1);
+      });
+
+      conateinr.appendChild(decrease);
+      conateinr.appendChild(input);
+      conateinr.appendChild(increase);
+      app.appendChild(conateinr);
+    };
+    reacter();
+  </script>
+</html>
