@@ -1,0 +1,43 @@
+<!-- **Throttle a button click event**  
+Prevent a button from being clicked multiple times in quick succession.
+
+**Techniques to Use:**
+
+- Throttling with `setTimeout`
+- Lodash `_.throttle` equivalent implementation
+
+--- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <button id="btn">Click me!</button>
+  </head>
+  <body>
+    <script>
+      const button = document.getElementById("btn");
+      button.addEventListener(
+        "click",
+        throttle(() => {
+          console.log("clicked");
+        }, 1000)
+      );
+
+      function throttle(callback, delay = 1000) {
+        let canClick = true;
+        return () => {
+          if (!canClick) return;
+          callback();
+          canClick = false;
+          timeOutCallback = setTimeout(() => {
+            canClick = true;
+            clearTimeout(timeOutCallback);
+          }, 1000);
+        };
+      }
+    </script>
+  </body>
+</html>
