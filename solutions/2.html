@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <label for="search">Search</label>
+    <input type="text" name="search" id="search" />
+    <script>
+      const input = document.getElementById("search");
+      let shouldFetch = true;
+
+      input.addEventListener("keyup", controlFetchWithAbortController);
+
+      function controlFeetchWithLogic(e) {
+        e.preventDefault();
+        async function search() {
+          console.log("searching....");
+
+          const resp = await fetch("https://jsonplaceholder.typicode.com/todos");
+          if (!resp.ok) throw new Error("Something went wrong!");
+          const data = await resp.json();
+          console.log(data);
+        }
+        if (shouldFetch) {
+          search();
+          shouldFetch = false;
+          setTimeout(() => {
+            shouldFetch = true;
+            console.log("You can fetch now!");
+          }, 3000);
+        } else {
+          console.log("You cannot fetch now!");
+        }
+      }
+
+      let abortController = new AbortController();
+
+      async function controlFetchWithAbortController(e) {
+        abortController.abort("Abort previous fetch!");
+
+        abortController = new AbortController();
+
+        console.log("searching....", e.target.value);
+
+        const resp = await fetch("https://jsonplaceholder.typicode.com/todos", {
+          signal: abortController.signal,
+        });
+        if (!resp.ok) throw new Error("Something went wrong!");
+        const data = await resp.json();
+        console.log(data);
+      }
+    </script>
+  </body>
+</html>
