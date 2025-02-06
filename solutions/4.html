@@ -1,0 +1,56 @@
+<!-- **Lazy-load images on a webpage**
+  Optimize a webpage's performance by loading images only when they are about to appear in the viewport. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Problem 4</title>
+    <style>
+      .lazy-img {
+        filter: blur(5px);
+        box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
+      }
+      .style {
+        width: 500px;
+      }
+    </style>
+  </head>
+  <body>
+    <img
+      src="https://w0.peakpx.com/wallpaper/120/653/HD-wallpaper-thor-4-avengers-thor-thumbnail.jpg"
+      class="lazy-img style"
+      data-src="http://m.gettywallpapers.com/wp-content/uploads/2022/06/Thor-4k-Wallpaper.jpg"
+      alt="Thor"
+    />
+
+    <script>
+      const LAZYIMG = "lazy-img";
+      const lazyImage = document.querySelectorAll(`.${LAZYIMG}`);
+      lazyImage.forEach((imgEl) => {
+        loadImage(imgEl);
+      });
+      function loadImage(imgEl) {
+        const imgSrc = imgEl.dataset.src;
+        const lazyImageParent = imgEl.parentElement;
+        const img = document.createElement("img");
+        img.src = imgSrc;
+        img.className = imgEl.className
+          .split(" ")
+          .filter(function (className) {
+            return className !== LAZYIMG;
+          })
+          .join(" ");
+        img.alt = imgEl.alt;
+
+        img.addEventListener("load", () => {
+          setTimeout(() => {
+            lazyImageParent.appendChild(img);
+            imgEl.remove();
+          }, 3000);
+        });
+      }
+    </script>
+  </body>
+</html>
