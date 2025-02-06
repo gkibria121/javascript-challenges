@@ -1,0 +1,113 @@
+<!-- 
+**Implement infinite scrolling**  
+Load more data dynamically as the user scrolls down a webpage. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .container {
+        display: flex;
+        flex-direction: column;
+      }
+      .item {
+        background-color: rgba(241, 241, 241, 0.692);
+        padding: 1rem;
+        width: 400px;
+        min-height: 200px;
+        border-radius: 4px;
+
+        margin-bottom: 2rem;
+      }
+    </style>
+    <title>Infinite scroll</title>
+  </head>
+  <body>
+    <div class="container"></div>
+  </body>
+  <script>
+    const container = document.querySelector(".container");
+    let elements = [];
+    let start = 0;
+    let limit = 10;
+    let observer;
+    let currentTarget;
+    let prviousTarget;
+    async function initialLoad() {
+      const data = await getData(
+        `https://jsonplaceholder.typicode.com/photos?_start=${start}&_limit=${limit}`
+      );
+      elements = data;
+      renderElements(elements);
+      currentTarget = getObservableElement(elements);
+      updateObserver(currentTarget, update);
+    }
+    async function getData(api) {
+      const resp = await fetch(api);
+      if (!resp.ok) throw new Error("Something went wrong!");
+      return await resp.json();
+    }
+    function createElement(el) {
+      return `<div class='item' id="id_${el.id}">
+             Id : ${el.id}</br>
+             </br>
+            Title : ${el.title}
+            </div>`;
+    }
+    function renderElements(elements) {
+      container.innerHTML = "";
+      elements.forEach((element) => {
+        const el = createElement(element);
+        container.insertAdjacentHTML("beforeend", el);
+      });
+    }
+
+    async function update() {
+      let tempElements = await getNewElements();
+      elements = [...elements, ...tempElements];
+      renderElements(elements);
+      let observableElement = getObservableElement(elements);
+      console.log(observableElement);
+      updateObserver(observableElement, update);
+    }
+    async function getNewElements() {
+      start += 10;
+      const data = await getData(
+        `https://jsonplaceholder.typicode.com/photos?_start=${start}&_limit=${limit}`
+      );
+      return data;
+    }
+    function updateObserver(target, callback) {
+      if (observer) observer.unobserve(prviousTarget);
+      if (!target) throw new Error("Target cannot be null!");
+
+      observer = new IntersectionObserver(
+        (entries, observer) => {
+          entries.forEach(async (entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+            console.log("loading...");
+            await callback();
+            console.log("loaded");
+          });
+        },
+        {
+          root: null,
+          threshold: 1,
+        }
+      );
+
+      observer.observe(target);
+      prviousTarget = target;
+    }
+    function getObservableElement() {
+      let id = elements.at(-6)?.id;
+      const target = document.querySelector(`#id_${id}`);
+      return target;
+    }
+    initialLoad();
+  </script>
+</html>
