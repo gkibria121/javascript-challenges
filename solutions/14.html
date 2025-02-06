@@ -1,0 +1,178 @@
+<!-- **Implement a drag-and-drop file uploader** Allow users to drag and drop files into a designated
+area, then preview the uploaded files. **Techniques to Use:** - Drag-and-drop API (`dragenter`,
+`dragover`, `drop`) - File API (`FileReader`) --- -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <title>File upload with drag and drag-and-drop</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background-color: rgba(1, 1, 1, 0.1);
+      }
+      .container {
+        width: 500px;
+        height: 400px;
+        border-radius: 40px;
+        padding: 1rem;
+        background-color: white;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin-inline: auto;
+        align-items: center;
+        margin-top: 2rem;
+        justify-content: center;
+      }
+      .hidden {
+        display: none;
+      }
+      .file-logo {
+        font-size: 40px;
+      }
+      .select-file {
+        background-color: white;
+        border: 1px solid black;
+        padding: 8px 10px;
+        border-radius: 5px;
+        box-shadow: 1px 1px 4px rgba(1, 1, 1, 0.1);
+      }
+      .files {
+        display: flex;
+        gap: 10px;
+        flex-direction: column;
+        margin-top: 10px;
+      }
+      .file {
+        padding: 5px;
+        border-radius: 5px;
+        background-color: white;
+        margin: 2rem;
+        padding: 2rem;
+        border: 1px solid black;
+        position: relative;
+      }
+      .file .title {
+        font-weight: bold;
+        margin-bottom: 1rem;
+      }
+      .file .delete {
+        color: red;
+        font-size: 1.2rem;
+        position: absolute;
+        right: 1rem;
+        top: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <i class="fa-solid fa-file file-logo"></i>
+      <h2>Drag and drop files to upload</h2>
+      <small>Your files will be private untile you publish you profile</small>
+      <button class="select-file">Select files</button>
+      <div class="message"></div>
+      <input type="file" id="file-input" class="hidden" accept=".txt" multiple />
+    </div>
+    <div class="files"></div>
+    <script>
+      const container = document.querySelector(".container");
+      const selectFileButton = document.querySelector(".select-file");
+      const fileInput = document.querySelector("#file-input");
+      const fileContainer = document.querySelector(".files");
+      const messageBox = document.querySelector(".message");
+      const submittedFiles = [];
+
+      container.addEventListener("drop", handleDrop);
+      selectFileButton.addEventListener("click", openHiddenFileInput);
+      fileInput.addEventListener("change", handleFileInput);
+      container.addEventListener("dragover", (e) => {
+        e.preventDefault();
+      });
+      function openHiddenFileInput() {
+        fileInput.click();
+      }
+
+      function handleDrop(e) {
+        e.preventDefault();
+        const dataTranser = e.dataTransfer;
+        const files = dataTranser.files;
+        if (!files.length) return;
+        handleFiles(files);
+      }
+      function handleFileInput(e) {
+        e.preventDefault();
+        const files = e.target.files;
+        if (!files.length) return;
+        handleFiles(files);
+        e.target.value = "";
+      }
+
+      function handleFiles(files) {
+        Array.from(files).forEach((file) => {
+          if (submittedFiles.some((storedFile) => file.name === storedFile.name)) {
+            showMessage(`File already exists : ${file.name}`);
+            return;
+          }
+          submittedFiles.push(file);
+
+          const reader = new FileReader();
+          reader.onload = () => {
+            const fileEl = createFilePrveiwElement(file, reader.result);
+            fileContainer.insertAdjacentHTML("beforeend", fileEl);
+            handleDelete(file.name);
+          };
+          reader.onerror = () => {
+            console.error(`Cannot read : ${file.name}`);
+          };
+          reader.readAsText(file);
+        });
+      }
+
+      function createFilePrveiwElement(file, fileContent) {
+        return `
+             <div class="file" data-file-name="${file.name}">
+                <p class="title">${file.name}</p>
+                <i class="fa-solid fa-circle-xmark delete"></i>
+                <div>${fileContent}</div>
+            </div>
+            `;
+      }
+      function showMessage(message) {
+        messageBox.innerHTML = message;
+        console.log(message);
+      }
+      function handleDelete(fileName) {
+        const fileEl = document.querySelector(`div[data-file-name="${fileName}"]`);
+        const deleteButton = fileEl.querySelector(".delete");
+        deleteButton.addEventListener(
+          "click",
+          deleteFile.bind(this, fileName, () => {
+            fileEl.remove();
+          })
+        );
+      }
+      function deleteFile(filename, callback = () => {}) {
+        const index = submittedFiles.find((file) => file.name === filename);
+        if (index === -1) throw new Error("File does not exists");
+        submittedFiles.splice(index, 1);
+        console.log(submittedFiles);
+
+        callback();
+      }
+    </script>
+  </body>
+</html>
