@@ -1,0 +1,78 @@
+<!-- **Create a virtual DOM diffing algorithm**  
+Build a simple algorithm to compare two DOM trees and update only the changed parts.
+
+**Techniques to Use:**
+
+- Virtual DOM representation with JavaScript objects
+- Diffing algorithms (e.g., pre-order tree traversal)
+
+--- -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Virtual Dom</title>
+  </head>
+  <body>
+    <div id="app">
+      <div class="counter">
+        <label for="counter1">Counter 1</label>
+        <input type="text" id="counter1" value="0" readonly />
+      </div>
+      <div class="counter">
+        <label for="counter1">Counter 2</label>
+        <input type="text" id="counter2" value="100" readonly />
+      </div>
+    </div>
+
+    <script>
+      function diff(htmlString) {
+        const updatedHTML = document.createRange().createContextualFragment(htmlString);
+        const updatedDom = updatedHTML.querySelector("#app");
+        const curDom = document.querySelector("#app");
+        const updatedNodes = Array.from(updatedDom.querySelectorAll("*"));
+        const curNodes = Array.from(curDom.querySelectorAll("*"));
+
+        curNodes.forEach((curNode, index) => {
+          const updatedNode = updatedNodes[index];
+          //update text
+          if (
+            !curNode.isEqualNode(updatedNode) &&
+            curNode.textContent.trim() !== updatedNode.textContent.trim()
+          ) {
+            curNode.textContent = updatedNode.textContent;
+          }
+          if (!curNode.isEqualNode(updatedNode)) {
+            Array.from(updatedNode.attributes).forEach((att) => {
+              curNode.setAttribute(att.name, att.value);
+            });
+          }
+        });
+      }
+      const updateDom = () => {
+        let counter = 0;
+        let counter2 = 100;
+
+        return () => {
+          counter++;
+          counter2--;
+          const updatedHTMLString = ` <div id="app">
+            <div class="counter">
+              <label for="counter1">Counter 1</label>
+              <input type="text" id="counter1" value="${counter}" readonly />
+            </div>
+            <div class="counter">
+              <label for="counter1">Counter 2</label>
+              <input type="text" id="counter2" value="${counter2}" readonly />
+            </div>
+          </div>
+      `;
+          diff(updatedHTMLString);
+        };
+      };
+
+      setInterval(updateDom(), 1000);
+    </script>
+  </body>
+</html>
