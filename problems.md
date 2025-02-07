@@ -208,7 +208,7 @@ Given three asynchronous functions (`task1`, `task2`, `task3`), write a function
 
 ---
 
-### **19. Problem: Retry a Failed Promise**
+<!-- ### **19. Problem: Retry a Failed Promise**
 
 Write a function that retries a failing promise up to 3 times before rejecting.
 
@@ -222,7 +222,7 @@ async function fetchWithRetry(apiUrl, retries = 3) {
 
 **Goal:** Implement retries using `async/await` and recursion or loops.
 
----
+--- -->
 
 ### **20. Problem: Timeout for a Promise**
 
