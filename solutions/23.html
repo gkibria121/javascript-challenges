@@ -1,0 +1,44 @@
+<!--  ### **23. Problem: Promise-based Event Listener**
+
+ Convert a standard DOM event listener into a promise-based function.
+
+ **Example:**
+
+ ```javascript
+ function waitForClick(button) {
+    Return a promise that resolves when the button is clicked
+ }
+ ```
+
+ **Goal:** Use the `Promise` constructor to wrap event handling. -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promise-based Event Listener</title>
+  </head>
+
+  <body>
+    <button id="btn">Click Me</button>
+  </body>
+
+  <script>
+    function waitForClick(element) {
+      return new Promise((resolve) => {
+        const callback = (event) => {
+          resolve(event);
+          element.removeEventListener("click", callback);
+        };
+        element.addEventListener("click", callback);
+      });
+    }
+
+    const btn = document.querySelector("#btn");
+
+    waitForClick(btn).then((event) => {
+      console.log(`Button clicked at (${event.clientX}, ${event.clientY})`);
+    });
+  </script>
+</html>
