@@ -574,16 +574,6 @@ Implement an undo/redo system using a functional approach:
 
 Write a function that composes multiple operations but doesn't execute them until explicitly called.
 
-**Example:**
-
-```javascript
-const lazyEvaluator = (x) => ({
-  add: (y) => lazyEvaluator(() => x() + y),
-  multiply: (y) => lazyEvaluator(() => x() * y),
-  evaluate: () => x(),
-});
-```
-
 ---
 
 #### **45. Chain Asynchronous Functions**
