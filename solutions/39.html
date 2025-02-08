@@ -1,0 +1,49 @@
+<!-- // #### **39. Event Stream Processing**
+
+// Compose functions to handle streams of events, such as filtering events by type and throttling them to reduce frequency.
+
+// **Techniques to Use:**
+
+// - `filter()`, `map()`
+// - Functional composition
+// - `setTimeout` -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Event Handler</title>
+  </head>
+  <body>
+    <button>Button</button>
+    <script>
+      const button = document.querySelector("button");
+      // Add proper event listeners
+      button.addEventListener("click", () => console.log("clicked"));
+      button.addEventListener("blur", () => console.log("blured"));
+      button.addEventListener("focus", () => console.log("focused"));
+      const eventComposer = (...events) => {
+        let canExecute = Object.fromEntries(
+          events.map((event) => {
+            return [event, true];
+          })
+        );
+
+        return (element, timeout = 30) => {
+          events.forEach((event) => {
+            if (canExecute[event] && typeof element[event] == "function") {
+              element[event]();
+              canExecute[event] = false;
+              setTimeout(() => {
+                canExecute[event] = true;
+              }, timeout * 1000);
+            }
+          });
+        };
+      };
+      const eventHandler = eventComposer("click");
+      button.addEventListener("click", () => eventComposer(button, 30));
+    </script>
+  </body>
+</html>
